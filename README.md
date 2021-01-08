@@ -6,7 +6,7 @@ A number of cycles need to be observed after read or write is enabled and before
 
 # How it works
 Use a stateful sequence to figure out when to trigger fifo_write_enable, fifo_read_enable and when to turn them off.  
-This code saves 3 bytes to the FIFO and independently waits for fifo_empty to be turned off to then starts reading those 3 bytes.
+This code saves 3 bytes to the FIFO and independently waits for fifo_empty to be turned off to then start reading those 3 bytes.
 If successful, each byte turns on one of the three LED's on the Tang Nano (It may look light-cyan, but all three RGB LED's are on).
 
 # Setup
