@@ -11,8 +11,6 @@ module TOP (CLOCK,LED_R,LED_G,LED_B);
     assign LED_G = !rG;
     assign LED_B = !rB;
 
-    reg fifo1_reset;
-
     reg [7:0] fifo1_in;
     wire [7:0] fifo1_out;
     reg fifo1_read_enable;
@@ -23,7 +21,6 @@ module TOP (CLOCK,LED_R,LED_G,LED_B);
     fifo_top your_instance_name (
         .RdClk(CLOCK),
         .WrClk(CLOCK),
-//        .Reset(fifo1_reset),
         .RdEn(fifo1_read_enable),
         .WrEn(fifo1_write_enable),
         .Data(fifo1_in),
@@ -37,7 +34,6 @@ module TOP (CLOCK,LED_R,LED_G,LED_B);
 
     initial
     begin
-        fifo1_reset <= 1'b0;
         fifo1_write_enable <= 1'b0;
         fifo1_read_enable <= 1'b0;
         WSTATE <= 0;
@@ -48,18 +44,6 @@ module TOP (CLOCK,LED_R,LED_G,LED_B);
     begin
         case (WSTATE)
             0:
-            begin
-                WSTATE <= 10;
-            end
-            10:
-            begin
-                WSTATE <= 11;
-            end
-            11:
-            begin
-                WSTATE <= 12;
-            end
-            12:
             begin
                 fifo1_write_enable = 1'b1;
                 fifo1_in <= 8'h65;
@@ -95,9 +79,6 @@ module TOP (CLOCK,LED_R,LED_G,LED_B);
             case (RSTATE)
                 0:
                 begin
-                    rR = 1'b0;
-                    rG = 1'b0;
-                    rB = 1'b0;
                     fifo1_read_enable = 1'b1;
                     RSTATE <= 1;                    // Wait 3 ticks before reading each byte
                 end
@@ -111,11 +92,11 @@ module TOP (CLOCK,LED_R,LED_G,LED_B);
                 end
                 3:                                  // Third tick to start reading
                 begin
-                    if(fifo1_out == 8'h65)
+                    if(fifo1_out == 8'h65)          // First byte
                     begin
                         rR = 1'b1;
                     end
-                    fifo1_read_enable = 1'b0;       // read_enable off on the 3rd tick from read_enable on, if you want only 3 bytes
+                    fifo1_read_enable = 1'b0;       // read_enable-off, at the 3rd tick from read_enable-on, if you want only 3 bytes
                     RSTATE <= 4;
                 end
                 4:                                  // Second byte
