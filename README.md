@@ -12,7 +12,7 @@ This code saves 3 bytes to the FIFO and independently waits for fifo_empty to be
 If successful, each byte turns on one of the three LED's on the Tang Nano (It may look light-cyan, but all three RGB LED's are on).
 
 ### To check the code
-Change the position of write_enable=0 and read_enable=0 up one case position. You will find less LED's are turn on.
+Change the position of write_enable=0 and read_enable=0 up one case position. You will find less LED's are turned on.
 
 ### Setup
 In the GOWIN FPGA Designer, start a new project.<br>
