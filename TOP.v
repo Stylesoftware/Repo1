@@ -94,7 +94,7 @@ module TOP (CLOCK,LED_R,LED_G,LED_B);           // I/O from the constraints file
                 begin
                     if(fifo1_out == 8'h65)          // First byte read
                     begin
-                        rR = 1'b1;                  // Turn the red LED on if the vaule is correct
+                        rR = 1'b1;                  // Turn the red LED on if the value is correct
                     end
                     fifo1_read_enable = 1'b0;       // End the read proccess by disabling this register (fifo1_read_enable),
                                                     // three ticks from when it was turned on, if you wish to read three bytes that is...
@@ -104,7 +104,7 @@ module TOP (CLOCK,LED_R,LED_G,LED_B);           // I/O from the constraints file
                 begin
                     if(fifo1_out == 8'h66)        
                     begin
-                        rG = 1'b1;                  // Turn the green LED on if the vaule is correct
+                        rG = 1'b1;                  // Turn the green LED on if the value is correct
                     end
                     RSTATE <= 5;
                 end
@@ -112,7 +112,7 @@ module TOP (CLOCK,LED_R,LED_G,LED_B);           // I/O from the constraints file
                 begin
                     if(fifo1_out == 8'h67)
                     begin
-                        rB = 1'b1;                  // Turn the green LED on if the vaule is correct
+                        rB = 1'b1;                  // Turn the blue LED on if the value is correct
                     end
                     RSTATE <= 6;                    // 6 diesn't exist so this sequence will never fire again
                 end
