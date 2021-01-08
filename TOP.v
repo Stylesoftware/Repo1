@@ -1,24 +1,24 @@
-module TOP (CLOCK,LED_R,LED_G,LED_B);
+module TOP (CLOCK,LED_R,LED_G,LED_B);           // I/O from the contraints file
 
-    input CLOCK;
-    output LED_R,LED_G,LED_B;
+    input CLOCK;                                // inputs are naturally regs
+    output LED_R,LED_G,LED_B;                   // outputs are naturally wires
 
-    reg rR=1'b0;
+    reg rR=1'b0;                                // create some regs for our LEDS
     reg rG=1'b0;
     reg rB=1'b0;
 
-    assign LED_R = !rR;
+    assign LED_R = !rR;                         // assign the LED wire to the above reg's, but inversed
     assign LED_G = !rG;
     assign LED_B = !rB;
 
-    reg [7:0] fifo1_in;
+    reg [7:0] fifo1_in;                         // all our FIFO requirements
     wire [7:0] fifo1_out;
     reg fifo1_read_enable;
     reg fifo1_write_enable;
     wire fifo1_empty;
     wire fifo1_full;
 
-    fifo_top your_instance_name (
+    fifo_top your_instance_name (               // instantiate the FIFO IP from Gowin
         .RdClk(CLOCK),
         .WrClk(CLOCK),
         .RdEn(fifo1_read_enable),
@@ -29,10 +29,10 @@ module TOP (CLOCK,LED_R,LED_G,LED_B);
         .Q(fifo1_out)
     );
 
-    reg [3:0] RSTATE;
-    reg [3:0] WSTATE;
+    reg [3:0] RSTATE;                           // Counter for the Read state machine below
+    reg [3:0] WSTATE;                           // Counter for the Write state machine below
 
-    initial
+    initial                                     // Init some stuff
     begin
         fifo1_write_enable <= 1'b0;
         fifo1_read_enable <= 1'b0;
@@ -40,9 +40,9 @@ module TOP (CLOCK,LED_R,LED_G,LED_B);
         RSTATE <= 0;
     end
 
-    always @ (posedge CLOCK) 
+    always @ (posedge CLOCK)                // On every clock edge do the following
     begin
-        case (WSTATE)
+        case (WSTATE)                       // Each clock cycle only does one of the following cases
             0:
             begin
                 fifo1_write_enable = 1'b1;  // Enable writing
@@ -70,11 +70,11 @@ module TOP (CLOCK,LED_R,LED_G,LED_B);
             5:                              // Third tick: Set write enable off
             begin 
                fifo1_write_enable = 1'b0;
-               WSTATE <= 6;
+               WSTATE <= 6;                 // 6 diesn't exist so this sequence will never fire again
             end
         endcase
 
-        if(!fifo1_empty)
+        if(!fifo1_empty)                            // if the fifo isn't empty run another stateful sequence, one per clock
             begin
             case (RSTATE)
                 0:
@@ -114,7 +114,7 @@ module TOP (CLOCK,LED_R,LED_G,LED_B);
                     begin
                         rB = 1'b1;                  // Turn the green LED on if the vaule is correct
                     end
-                    RSTATE <= 6;
+                    RSTATE <= 6;                    // 6 diesn't exist so this sequence will never fire again
                 end
             endcase
         end
