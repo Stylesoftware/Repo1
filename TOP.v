@@ -1,4 +1,4 @@
-module TOP (CLOCK,LED_R,LED_G,LED_B);           // I/O from the contraints file
+module TOP (CLOCK,LED_R,LED_G,LED_B);           // I/O from the constraints file
 
     input CLOCK;                                // inputs are naturally regs
     output LED_R,LED_G,LED_B;                   // outputs are naturally wires
