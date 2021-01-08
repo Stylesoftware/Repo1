@@ -114,7 +114,7 @@ module TOP (CLOCK,LED_R,LED_G,LED_B);           // I/O from the constraints file
                     begin
                         rB = 1'b1;                  // Turn the blue LED on if the value is correct
                     end
-                    RSTATE <= 6;                    // 6 diesn't exist so this sequence will never fire again
+                    RSTATE <= 6;                    // 6 doesn't exist so this sequence will never fire again
                 end
             endcase
         end
