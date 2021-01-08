@@ -45,29 +45,29 @@ module TOP (CLOCK,LED_R,LED_G,LED_B);
         case (WSTATE)
             0:
             begin
-                fifo1_write_enable = 1'b1;
-                fifo1_in <= 8'h65;
+                fifo1_write_enable = 1'b1;  // Enable writing
+                fifo1_in <= 8'h65;          // Write first byte
                 WSTATE <= 1;
             end
             1:
             begin        
-                fifo1_in <= 8'h66;
+                fifo1_in <= 8'h66;          // Write second byte
                 WSTATE <= 2;
             end
             2:
             begin 
-               fifo1_in <= 8'h67;
-               WSTATE <= 3;             // Wait 3 more ticks before setting write enable to off
+               fifo1_in <= 8'h67;           // Write thrid byte
+               WSTATE <= 3;                 // NOTE: Wait 3 more ticks before setting write enable to off
             end
-            3:                          // First wait tick
+            3:                              // First wait tick
             begin 
                WSTATE <= 4;
             end
-            4:                          // Second wait tick
+            4:                              // Second wait tick
             begin 
                WSTATE <= 5;
             end
-            5:                          // Third tick: Set write enable off
+            5:                              // Third tick: Set write enable off
             begin 
                fifo1_write_enable = 1'b0;
                WSTATE <= 6;
@@ -79,7 +79,7 @@ module TOP (CLOCK,LED_R,LED_G,LED_B);
             case (RSTATE)
                 0:
                 begin
-                    fifo1_read_enable = 1'b1;
+                    fifo1_read_enable = 1'b1;       // Start the read proccess by enabling this register (fifo1_read_enable)
                     RSTATE <= 1;                    // Wait 3 ticks before reading each byte
                 end
                 1:                                  // First wait tick
@@ -92,26 +92,27 @@ module TOP (CLOCK,LED_R,LED_G,LED_B);
                 end
                 3:                                  // Third tick to start reading
                 begin
-                    if(fifo1_out == 8'h65)          // First byte
+                    if(fifo1_out == 8'h65)          // First byte read
                     begin
-                        rR = 1'b1;
+                        rR = 1'b1;                  // Turn the red LED on if the vaule is correct
                     end
-                    fifo1_read_enable = 1'b0;       // read_enable-off, at the 3rd tick from read_enable-on, if you want only 3 bytes
+                    fifo1_read_enable = 1'b0;       // End the read proccess by disabling this register (fifo1_read_enable),
+                                                    // three ticks from when it was turned on, if you wish to read three bytes.
                     RSTATE <= 4;
                 end
-                4:                                  // Second byte
+                4:                                  // Second byte read
                 begin
                     if(fifo1_out == 8'h66)        
                     begin
-                        rG = 1'b1;
+                        rG = 1'b1;                  // Turn the green LED on if the vaule is correct
                     end
                     RSTATE <= 5;
                 end
-                5:                                  // Third byte
+                5:                                  // Third byte read
                 begin
                     if(fifo1_out == 8'h67)
                     begin
-                        rB = 1'b1;
+                        rB = 1'b1;                  // Turn the green LED on if the vaule is correct
                     end
                     RSTATE <= 6;
                 end
