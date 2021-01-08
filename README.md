@@ -1,13 +1,16 @@
 # Tang-Nano-FIFO-IP-Example
-Exploring the timing for the FIFO IP from Gowin, setup for the Tang Nano
+Exploring the timing for the FIFO IP from Gowin, setup for the Tang Nano.
 
 Goal:
 To understand the timing nessesary to use the built-in FIFO IP from Gowin.
 
+The problem:
+A number of cycles needs to be observed after read or write is enabled before the actual data is present or before read or write is then disabled.
+
 How it works:
 Use a state sequence to figure out when to trigger fifo_write_enable, fifo_read_enable and when to turn them off.  
 This code saves 3 bytes to the FIFO and independently waits for fifo_empty to be turned off to then start reading those 3 bytes.
-If successfull, each byte turns on one of the three LED's on the Tang Nano.
+If successfull, each byte turns on one of the three LED's on the Tang Nano (It may look light-cyan, but all three RGB LED's are on).
 
 Setup:
 In the GOWIN FPGA Designer, start a new project.
