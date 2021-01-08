@@ -56,7 +56,7 @@ module TOP (CLOCK,LED_R,LED_G,LED_B);           // I/O from the constraints file
             end
             2:
             begin 
-               fifo1_in <= 8'h67;           // Write thrid byte
+               fifo1_in <= 8'h67;           // Write third byte
                WSTATE <= 3;                 // NOTE: Wait 3 more ticks before setting write enable to off
             end
             3:                              // First wait tick
@@ -80,7 +80,7 @@ module TOP (CLOCK,LED_R,LED_G,LED_B);           // I/O from the constraints file
                 0:
                 begin
                     fifo1_read_enable = 1'b1;       // Start the read proccess by enabling this register (fifo1_read_enable)
-                    RSTATE <= 1;                    // Wait 3 ticks before reading each byte
+                    RSTATE <= 1;                    // NOTE: Wait 3 ticks before reading each byte
                 end
                 1:                                  // First wait tick
                 begin
@@ -97,7 +97,7 @@ module TOP (CLOCK,LED_R,LED_G,LED_B);           // I/O from the constraints file
                         rR = 1'b1;                  // Turn the red LED on if the vaule is correct
                     end
                     fifo1_read_enable = 1'b0;       // End the read proccess by disabling this register (fifo1_read_enable),
-                                                    // three ticks from when it was turned on, if you wish to read three bytes.
+                                                    // three ticks from when it was turned on, if you wish to read three bytes that is...
                     RSTATE <= 4;
                 end
                 4:                                  // Second byte read
