@@ -7,7 +7,7 @@ module TOP (CLOCK,LED_R,LED_G,LED_B);           // I/O from the constraints file
     reg rG=1'b0;
     reg rB=1'b0;
 
-    assign LED_R = !rR;                         // assign the LED wire to the above reg's, but inversed
+    assign LED_R = !rR;                         // assign LED wire's to the above reg's, inverted.
     assign LED_G = !rG;
     assign LED_B = !rB;
 
@@ -32,7 +32,7 @@ module TOP (CLOCK,LED_R,LED_G,LED_B);           // I/O from the constraints file
     reg [3:0] RSTATE;                       // Counter for the Read state machine below
     reg [3:0] WSTATE;                       // Counter for the Write state machine below
 
-    initial                                 // Init the fifo registers and state machine
+    initial                                 // Init the fifo registers and state machines
     begin
         fifo_write_enable <= 1'b0;
         fifo_read_enable <= 1'b0;
