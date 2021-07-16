@@ -40,7 +40,7 @@ module TOP (CLOCK,LED_R,LED_G,LED_B);           // I/O from the constraints file
         RSTATE <= 0;
     end
 
-    always @ (posedge CLOCK)      // On every clock edge do the following
+    always @ (posedge CLOCK)      // On every clock edge start the Write state machine
     begin
         case (WSTATE)                       // Each tick only does one of the following cases
             0:
@@ -67,19 +67,19 @@ module TOP (CLOCK,LED_R,LED_G,LED_B);           // I/O from the constraints file
             begin 
                WSTATE <= 5;
             end
-            5:                              // Third tick: Set write enable off
+            5:                              // Third tick 
             begin 
-               fifo_write_enable = 1'b0;
+               fifo_write_enable = 1'b0;    // *** End the write proccess after 3 ticks
                WSTATE <= 6;                 // 6 does't exist so the state machine stops
             end
         endcase
 
-        if(!fifo_empty)          // if the fifo isn't empty run another stateful sequence, one case per tick
+        if(!fifo_empty)          // if the fifo isn't empty run the Read state machine, one case per tick
             begin
             case (RSTATE)
                 0:
                 begin
-                    fifo_read_enable = 1'b1;   // Start the read proccess by enabling this register (fifo_read_enable)
+                    fifo_read_enable = 1'b1;   // start the read proccess
                     RSTATE <= 1;               // NOTE: Wait 3 ticks before reading each byte
                 end                            
                 1:                             // First wait tick
@@ -96,7 +96,7 @@ module TOP (CLOCK,LED_R,LED_G,LED_B);           // I/O from the constraints file
                     begin	                   
                         rR = 1'b1;             // Turn the red LED on if the value is correct
                     end	                       
-                    fifo_read_enable = 1'b0;   // End the read proccess by disabling this register (fifo_read_enable),
+                    fifo_read_enable = 1'b0;   // *** End the read proccess (3 ticks behind and 2 more bytes to read)
                     RSTATE <= 4;	           
                 end	                           
                 4:                             // Second byte read
